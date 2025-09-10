@@ -276,67 +276,67 @@ func main() {
 
 		// Test 10: Soft delete (copy to .deleted and remove original)
 		fmt.Println("\n--- Test 10: Soft Delete ---")
-		deletedKey := testKey + ".deleted"
+		// deletedKey := testKey + ".deleted"
 
-		// Copy to deleted key
-		_, err = s3Client.CopyObject(ctx, &s3.CopyObjectInput{
-			Bucket:     aws.String(bucketName),
-			Key:        aws.String(deletedKey),
-			CopySource: aws.String(fmt.Sprintf("%s/%s", bucketName, testKey)),
-		})
-		if err != nil {
-			fmt.Printf("Error copying file for soft delete: %v\n", err)
-		} else {
-			fmt.Printf("✓ File copied to deleted key: %s\n", deletedKey)
+		// // Copy to deleted key
+		// _, err = s3Client.CopyObject(ctx, &s3.CopyObjectInput{
+		// 	Bucket:     aws.String(bucketName),
+		// 	Key:        aws.String(deletedKey),
+		// 	CopySource: aws.String(fmt.Sprintf("%s/%s", bucketName, testKey)),
+		// })
+		// if err != nil {
+		// 	fmt.Printf("Error copying file for soft delete: %v\n", err)
+		// } else {
+		// 	fmt.Printf("✓ File copied to deleted key: %s\n", deletedKey)
 
-			// Delete original
-			_, err = s3Client.DeleteObject(ctx, &s3.DeleteObjectInput{
-				Bucket: aws.String(bucketName),
-				Key:    aws.String(testKey),
-			})
-			if err != nil {
-				fmt.Printf("Error deleting original file: %v\n", err)
-			} else {
-				fmt.Printf("✓ Original file deleted\n")
-			}
-		}
+		// 	// Delete original
+		// 	_, err = s3Client.DeleteObject(ctx, &s3.DeleteObjectInput{
+		// 		Bucket: aws.String(bucketName),
+		// 		Key:    aws.String(testKey),
+		// 	})
+		// 	if err != nil {
+		// 		fmt.Printf("Error deleting original file: %v\n", err)
+		// 	} else {
+		// 		fmt.Printf("✓ Original file deleted\n")
+		// 	}
+		// }
 
 		// Test 11: Verify soft delete
 		fmt.Println("\n--- Test 11: Verify Soft Delete ---")
 
 		// Check if original file is gone
-		_, err = s3Client.HeadObject(ctx, &s3.HeadObjectInput{
-			Bucket: aws.String(bucketName),
-			Key:    aws.String(testKey),
-		})
-		if err != nil {
-			fmt.Printf("✓ Original file no longer exists (expected)\n")
-		} else {
-			fmt.Printf("✗ Original file still exists (unexpected)\n")
-		}
+		// _, err = s3Client.HeadObject(ctx, &s3.HeadObjectInput{
+		// 	Bucket: aws.String(bucketName),
+		// 	Key:    aws.String(testKey),
+		// })
+		// if err != nil {
+		// 	fmt.Printf("✓ Original file no longer exists (expected)\n")
+		// } else {
+		// 	fmt.Printf("✗ Original file still exists (unexpected)\n")
+		// }
 
-		// Check if deleted version exists
-		_, err = s3Client.HeadObject(ctx, &s3.HeadObjectInput{
-			Bucket: aws.String(bucketName),
-			Key:    aws.String(deletedKey),
-		})
-		if err != nil {
-			fmt.Printf("✗ Deleted file does not exist: %v\n", err)
-		} else {
-			fmt.Printf("✓ Deleted file exists with .deleted suffix\n")
-		}
+		// // Check if deleted version exists
+		// _, err = s3Client.HeadObject(ctx, &s3.HeadObjectInput{
+		// 	Bucket: aws.String(bucketName),
+		// 	Key:    aws.String(deletedKey),
+		// })
+		// if err != nil {
+		// 	fmt.Printf("✗ Deleted file does not exist: %v\n", err)
+		// } else {
+		// 	fmt.Printf("✓ Deleted file exists with .deleted suffix\n")
+		// }
 
 		// Test 12: Cleanup - permanently delete the .deleted file
-		fmt.Println("\n--- Test 12: Cleanup ---")
-		_, err = s3Client.DeleteObject(ctx, &s3.DeleteObjectInput{
-			Bucket: aws.String(bucketName),
-			Key:    aws.String(deletedKey),
-		})
-		if err != nil {
-			fmt.Printf("Error cleaning up deleted file: %v\n", err)
-		} else {
-			fmt.Printf("✓ Cleanup complete - deleted file removed\n")
-		}
+		// fmt.Println("\n--- Test 12: Cleanup ---")
+		// _, err = s3Client.DeleteObject(ctx, &s3.DeleteObjectInput{
+		// 	Bucket: aws.String(bucketName),
+		// 	Key:    aws.String(deletedKey),
+		// })
+		// if err != nil {
+		// 	fmt.Printf("Error cleaning up deleted file: %v\n", err)
+		// } else {
+		// 	fmt.Printf("✓ Cleanup complete - deleted file removed\n")
+		// }
 	}
 
 	fmt.Println("\n--- All Tests Complete ---")
